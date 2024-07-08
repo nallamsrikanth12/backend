@@ -36,13 +36,13 @@ pipeline {
     post { 
             always { 
             echo 'I will always say Hello again!'
-            deleteDir()
+            //deleteDir()
         }
         success { 
-            echo 'I will run pipe is sucess'
+            echo 'I will run pipeline is sucess'
         }
         failure { 
-            echo 'I will run pipe is failure'
+            echo 'I will run pipeline is failure'
         }
     
     }
