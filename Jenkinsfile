@@ -13,8 +13,7 @@ pipeline {
         stage('test') {
             steps {
                 sh """
-                 this is testing
-
+                 echo this is testing
                 """
             }
         }
