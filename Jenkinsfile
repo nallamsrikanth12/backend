@@ -14,6 +14,7 @@ pipeline {
             steps {
                 def packagejson = readJSON file: 'dir/input.json'
                 def appversion = packagejson.version
+                echo "application version : $appversion"
             }
         }
         stage('install dependences of the npm ') {
