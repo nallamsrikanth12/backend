@@ -45,7 +45,7 @@ pipeline {
                 """
             }
         }
-        stage('npm install'){
+        stage('Build'){
             steps {
                 sh """
                 zip -q -r backend-${appversion}.zip * -x jenkinsfiles -x  backend-${appversion}.zip
