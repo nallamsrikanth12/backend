@@ -12,9 +12,17 @@ pipeline {
     environment {
         def appversion = ''
     }
+    parameters {
+        choice(name: 'CHOICE', choices: ['apply', 'destroy',], description: 'Pick something')
+    }
 
     stages{
         stage{
+            when {
+                expression {
+                    params.action == 'apply'
+                }
+            }
             steps{
                 script{
                     def packagejson = readJSON file: 'package.json'
@@ -24,6 +32,10 @@ pipeline {
             }
         }
         stage('npm install'){
+              input {
+                message "Should we continue?"
+                ok "Yes, we should."
+              }
             steps {
                 sh """
                 ls -ltr
