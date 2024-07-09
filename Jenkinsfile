@@ -8,56 +8,53 @@ pipeline {
         disableConcurrentBuilds()
         ansiColor('xterm')
     }
-    environment {
-        nexusUrl = 'nexus.srikantheswar.online:8081'
+       environment{
+        def appVersion = '' //variable declaration
+        nexusUrl = 'nexus.daws78s.online:8081'
     }
-
     stages {
-        stage('read the json files') {
-            steps {
-                script {
-                    def packagejson = readJSON file: 'package.json'
-                    env.appversion = packagejson.version
-                    echo "application version : ${env.appversion}"
+        stage('read the version'){
+            steps{
+                script{
+                    def packageJson = readJSON file: 'package.json'
+                    appVersion = packageJson.version
+                    echo "application version: $appVersion"
                 }
             }
         }
-        stage('install dependencies of the npm') {
+        stage('Install Dependencies') {
             steps {
+               sh """
+                npm install
+                ls -ltr
+                echo "application version: $appVersion"
+               """
+            }
+        }
+        stage('Build'){
+            steps{
                 sh """
-                    echo this is testing
-                    npm install
-                    ls -ltr
-                    echo "application version : ${env.appversion}"
+                zip -q -r backend-${appVersion}.zip * -x Jenkinsfile -x backend-${appVersion}.zip
+                ls -ltr
                 """
             }
         }
-        stage('Build') {
-            steps {
-                sh """
-                    zip -q -r backend.${env.appversion}.zip * -x jenkinsfile -x backend.${env.appversion}.zip
-                    ls -ltr
-                """
-            }
-        }
-        stage('Nexus artifacts uploader') {
-            steps {
-                script {
+        stage('Nexus Artifact Upload'){
+            steps{
+                script{
                     nexusArtifactUploader(
                         nexusVersion: 'nexus3',
                         protocol: 'http',
-                        nexusUrl: "${env.nexusUrl}",
+                        nexusUrl: "${nexusUrl}",
                         groupId: 'com.expense',
-                        version: "${env.appversion}",
-                        repository: 'backend',
+                        version: "${appVersion}",
+                        repository: "backend",
                         credentialsId: 'nexus-auth',
                         artifacts: [
-                            [
-                                artifactId: "backend",
-                                classifier: '',
-                                file: "backend-${env.appversion}.zip",
-                                type: 'zip'
-                            ]
+                            [artifactId: "backend" ,
+                            classifier: '',
+                            file: "backend-" + "${appVersion}" + '.zip',
+                            type: 'zip']
                         ]
                     )
                 }
@@ -76,4 +73,5 @@ pipeline {
             echo 'I will run pipeline is failure'
         }
     }
+
 }
