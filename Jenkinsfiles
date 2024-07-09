@@ -10,62 +10,58 @@ pipeline {
     }
 
     environment {
-        def appversion = ''
+        APP_VERSION = '' // Use an environment variable
     }
     parameters {
-        choice(name: 'CHOICE', choices: ['apply', 'destroy',], description: 'Pick something')
+        choice(name: 'CHOICE', choices: ['apply', 'destroy'], description: 'Pick something')
     }
 
-    stages{
-        stage{
+    stages {
+        stage('Read JSON') { // Add a name to the stage
             when {
                 expression {
-                    params.action == 'apply'
+                    return params.CHOICE == 'apply'
                 }
             }
-            steps{
-                script{
+            steps {
+                script {
                     def packagejson = readJSON file: 'package.json'
-                    appversion = packagejson.version
-                    echo "application version is $appversion"
+                    APP_VERSION = packagejson.version
+                    echo "application version is ${APP_VERSION}"
                 }
             }
         }
-        stage('npm install'){
-              input {
+        stage('npm install') {
+            input {
                 message "Should we continue?"
                 ok "Yes, we should."
-              }
+            }
             steps {
                 sh """
                 ls -ltr
                 npm install
-                 echo "application version is $appversion"
-
+                echo "application version is ${APP_VERSION}"
                 """
             }
         }
-        stage('Build'){
+        stage('Build') {
             steps {
                 sh """
-                zip -q -r backend-${appversion}.zip * -x jenkinsfiles -x  backend-${appversion}.zip
+                zip -q -r backend-${APP_VERSION}.zip * -x jenkinsfiles -x backend-${APP_VERSION}.zip
                 ls -ltr
-
                 """
             }
         }
-
     }
     post {
         always {
-            echo 'i will run always'
+            echo 'I will run always'
         }
         success {
-            echo 'i will run  when pipeline is success'
+            echo 'I will run when pipeline is success'
         }
         failure {
-            echo 'i will run the pipeline is failure '
+            echo 'I will run when the pipeline fails'
         }
-    }      
-    
+    }
 }
