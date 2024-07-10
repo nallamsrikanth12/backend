@@ -67,7 +67,7 @@ pipeline {
         stage {
             steps {
                 script {
-                    def params [
+                    def params = [
                     string(name: 'appversion', value: "${appversion}")
                 ]
                     build job: 'backend-deploy', parameters: params, wait: false
