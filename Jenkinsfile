@@ -51,7 +51,7 @@ pipeline {
                         groupId: 'com.expense',
                         version: "${appversion}",
                         repository: 'backend',
-                        credentialsId: 'nexus-auth',
+                        credentialsId: '',
                         artifacts: [
                             [
                                 artifactId: "backend",
@@ -64,7 +64,20 @@ pipeline {
                 }
             }
         }
-    }
+        stage {
+            steps {
+                script {
+                    def params [
+                    string(name: 'appversion', value: "${appversion}")
+                ]
+                    build job: 'backend-deploy', parameters: params, wait: false
+}
+        }
+
+                }
+            }
+        
+    
     post { 
         always { 
             echo 'I will always say Hello again!'
