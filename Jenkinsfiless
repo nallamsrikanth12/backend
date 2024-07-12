@@ -1,0 +1,49 @@
+pipeline {
+    agent {
+        label 'Agent-1'
+    }
+    options {
+        timeout(time: 1, unit: 'HOURS')
+    }
+    environment {
+        def appversion = ''
+        nexusUrl = nexus.srikantheswar.online:8081
+    }
+    stages {
+        stage('read the json file') { 
+            steps {
+                script {
+                    def props = readJSON file: 'package.json'
+                    appversion = package..version
+                    echo "application is ${appversion}"
+                }
+                
+            }
+        }
+        stage('build') { 
+            steps {
+                sh """
+                 zip -q -r backend-${appversion}.zip -x jenkinsfiless -x backend-${appversion}.zip
+                 ls -ltr
+                 echo "application is ${appversion}"
+                """
+            }
+        }
+        // stage('Deploy') { 
+        //     steps {
+        //         // 
+        //     }
+        // }
+    }
+    post {
+        always {
+            echo 'i will run always'
+        }
+        success {
+            echo 'i will run pipeline is success'
+        }
+        failure {
+            echo  'i will run pipeline is failure'
+        }
+    }
+}
