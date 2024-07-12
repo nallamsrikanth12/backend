@@ -7,7 +7,7 @@ pipeline {
     }
     environment {
         def appversion = ''
-        nexusUrl = nexus.srikantheswar.online:8081
+        // nexusUrl = nexus.srikantheswar.online:8081
     }
     stages {
         stage('read the json file') { 
