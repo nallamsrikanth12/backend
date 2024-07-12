@@ -7,6 +7,8 @@ pipeline {
     }
     environment {
         def appversion = ''
+        disableConcurrentBuilds()
+        ansiColor('xterm')
        
     }
     stages {
@@ -14,7 +16,7 @@ pipeline {
             steps {
                 script {
                     def props = readJSON file: 'package.json'
-                    appversion = package.version
+                    appversion = packagejson.version
                     echo "application is ${appversion}"
                 }
                 
@@ -38,6 +40,8 @@ pipeline {
     post {
         always {
             echo 'i will run always'
+            deleteDir()
+
         }
         success {
             echo 'i will run pipeline is success'
