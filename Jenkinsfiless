@@ -22,20 +22,27 @@ pipeline {
                 
             }
         }
-        stage('build') { 
+        stage('npm install') { 
             steps {
                 sh """
-                 zip -q -r backend-${appversion}.zip -x jenkinsfiless -x backend-${appversion}.zip
+                 npm install
                  ls -ltr
                  echo "application is ${appversion}"
                 """
             }
         }
-        // stage('Deploy') { 
-        //     steps {
-        //         // 
-        //     }
-        // }
+
+
+        stage('build') { 
+            steps {
+                sh """
+                 zip -q -r backend-${appversion}.zip * -x jenkinsfiless -x backend-${appversion}.zip
+                 ls -ltr
+                 echo "application is ${appversion}"
+                """
+            }
+        }
+        
     }
     post {
         always {
