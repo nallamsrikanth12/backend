@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     def props = readJSON file: 'package.json'
-                    appversion = package..version
+                    appversion = package.version
                     echo "application is ${appversion}"
                 }
                 
