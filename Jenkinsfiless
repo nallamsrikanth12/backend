@@ -4,11 +4,11 @@ pipeline {
     }
     options {
         timeout(time: 1, unit: 'HOURS')
+        disableConcurrentBuilds()
+        ansiColor('xterm')
     }
     environment {
         def appversion = ''
-        disableConcurrentBuilds()
-        ansiColor('xterm')
        
     }
     stages {
