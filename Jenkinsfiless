@@ -37,9 +37,8 @@ pipeline {
         stage('build') { 
             steps {
                 sh """
-                 zip -q -r backend-${appversion}.zip * -x jenkinsfiless -x jenkinsfile -x jenkinsfiles -x backend-${appversion}.zip
-                 ls -ltr
-                 echo "application is ${appversion}"
+                zip -q -r backend.${appversion}.zip * -x jenkinsfile -x backend.${appversion}.zi
+                echo "application is ${appversion}"
                 """
             }
         }
