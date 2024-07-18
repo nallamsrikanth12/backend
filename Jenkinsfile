@@ -41,7 +41,7 @@ pipeline {
                 """
             }
         }
-        stage('Build') {
+        stage('scan the code ') {
             environment {
                 scannerHome = tool 'Sonar'
             }
