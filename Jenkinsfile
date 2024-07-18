@@ -43,11 +43,11 @@ pipeline {
         }
         stage('scan the code') {
             environment {
-                scannerHome = tool 'Sonar'
+                scannerHome = tool 'sonar'
             }
             steps {
                 script {
-                    withSonarQubeEnv('Sonar') {
+                    withSonarQubeEnv('sonar') {
                         sh "${scannerHome}/bin/sonar-scanner"
                     }
                 }
@@ -88,7 +88,7 @@ pipeline {
 //         }
 
 //                 }
-            }
+        }
         
     
     post { 
