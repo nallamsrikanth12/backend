@@ -41,6 +41,19 @@ pipeline {
                 """
             }
         }
+        stage('Build') {
+            environment {
+                scannerHome = tool 'Sonar'
+            }
+            steps {
+                script {
+                    withSonarQubeEnv('Sonar') {
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
+                }
+            }
+        }
+
         stage('Nexus artifacts uploader') {
             steps {
                 script {
