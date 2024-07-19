@@ -41,18 +41,18 @@ pipeline {
                 """
             }
         }
-        stage('scan the code') {
-            environment {
-                scannerHome = tool 'sonar'
-            }
-            steps {
-                script {
-                    withSonarQubeEnv('sonar') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                    }
-                }
-            }
-        }
+        // stage('scan the code') {
+        //     environment {
+        //         scannerHome = tool 'sonar'
+        //     }
+        //     steps {
+        //         script {
+        //             withSonarQubeEnv('sonar') {
+        //                 sh "${scannerHome}/bin/sonar-scanner"
+        //             }
+        //         }
+        //     }
+        // }
 
         stage('Nexus artifacts uploader') {
             steps {
@@ -77,17 +77,17 @@ pipeline {
                 }
             }
         }
-//         stage ('trigger the backend-deploy') {
-//             steps {
-//                 script {
-//                     def params = [
-//                     string(name: 'appversion', value: "${appversion}")
-//                 ]
-//                     build job: 'backend-deployment', parameters: params, wait: false
-// }
-//         }
+        stage ('trigger the backend-deploy') {
+            steps {
+                script {
+                    def params = [
+                    string(name: 'appversion', value: "${appversion}")
+                ]
+                    build job: 'backend-deployment', parameters: params, wait: false
+            }
+        }
 
-//                 }
+                }
         }
         
     
