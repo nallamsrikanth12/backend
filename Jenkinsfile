@@ -34,6 +34,7 @@ pipeline {
                     npm install
                     ls -ltr
                     echo "application version : ${appversion}"
+                    echo "my name is srikanth"
                 """
             }
         }
