@@ -5,8 +5,9 @@ pipeline {
     options {
         // Timeout counter starts BEFORE agent is allocated
         timeout(time: 30, unit: 'MINUTES')
-        disableConcurrentBuilds()
         ansiColor('xterm')
+        disableConcurrentBuilds()
+       
     }
     parameters {
         booleanParam(name: 'deploy', defaultValue: false, description: 'Toggle this value')
